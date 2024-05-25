@@ -32,7 +32,8 @@ class MessageController extends Controller
 
     public function message(Request $request): JsonResponse {
         $message = Message::create([
-            'user_id' => 1,
+            'sender_id' => $request->get('sender_id'),
+            'receiver_id' => $request->get('receiver_id'),
             'text' => $request->get('text'),
         ]);
         SendMessage::dispatch($message);
