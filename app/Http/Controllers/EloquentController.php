@@ -8,6 +8,7 @@ use App\Models\Author;
 use App\Models\Comment;
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,11 +16,30 @@ class EloquentController extends Controller
 {
     // 
 
+    // public function createAuthor(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'username' => 'required|string',
+    //     ]);
+
+    //     $user = User::create([
+    //         'name' => $request->get('username'),
+    //     ]);
+
+    //     Author::create([
+    //         'name' => $request->get('username'),
+    //         'user_id' => $user->id,
+    //     ]);
+
+    //     return response("Author Created Successfull");
+    // }
+
     public function createAuthor(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string',
+            'username' => 'required|string'
         ]);
 
         $user = User::create([
@@ -27,11 +47,11 @@ class EloquentController extends Controller
         ]);
 
         Author::create([
-            'name' => $request->get('username'),
+            'name' => $request->get('name'),
             'user_id' => $user->id,
         ]);
 
-        return response("Author Created Successfull");
+        return response("Auther Created Successfully");
     }
 
 
@@ -54,26 +74,46 @@ class EloquentController extends Controller
         return response("Article has created successfull for author " . $author->name);
     }
 
+
+
     // create audience
+    public function createAudience(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $user = User::create([
+            'name' => Str::lower($request->get('name')),
+        ]);
+
+        if ($user != null) {
+            Audience::create(['name' => $request->get('name'), 'user_id' => $user->id]);
+            return response("Audience have Created successfully");
+        }
+        return response("Failed to create Audience");
+    }
+
+    // create subscribe function
 
     public function subscribe(Request $request)
     {
         $request->validate([
             'name' => "required|string|max:255",
-            'article' => "required|string|max:255",
+            'article' => 'required|string|max:255'
         ]);
 
-        $audience = Audience::where('name', '=', $request->get('name'))->first();
+        $a = Audience::where('name', '=', $request->get('name'))->first();
         $article = Article::where('name', '=', $request->get('article'))->first();
 
-        if ($audience != null || $article != null) {
-            if ($audience->article_id == null) {
-                $audience->article_id = $article->id;
-                $audience->save();
-                return response("Audience has subscribed to article " . $article->id);
+        if ($a != null || $article != null) {
+            if ($a->article_id == null) {
+                $a->article_id = $article->id;
+                $a->save();
+                return response("Audience have Subscribed to article " . $article->id);
             } else {
-                Audience::create(['name' => $audience->name, 'user_id' => $audience->user_id, 'article_id' => $article->id]);
-                return response("Audience has subscribed to article " . $article->id);
+                Audience::create(['name' => $a->name, 'user_id' => $a->user_id, 'article_id' => $article->id]);
+                return response("Audience have Subscribed to article " . $article->id);
             }
         } else {
             return response("Audience or Article does not exist");

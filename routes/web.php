@@ -7,19 +7,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', [\App\Http\Controllers\EloquentController::class, 'test']);
+// Route::get('/test', [\App\Http\Controllers\EloquentController::class, 'test']);
 
 // api
 
 //create 
-Route::post('/author', [EloquentController::class, 'createAuthor']);
-Route::post('/article', [EloquentController::class, 'createArticle']);
-Route::post('/audience', [EloquentController::class, 'createAudience']);
-Route::post('/subscribe', [EloquentController::class, 'subscribe']);
-Route::post('/comment', [EloquentController::class, 'comment']);
+// Route::post('/author', [EloquentController::class, 'createAuthor']);
+// Route::post('/article', [EloquentController::class, 'createArticle']);
+// Route::post('/audience', [EloquentController::class, 'createAudience']);
+// Route::post('/subscribe', [EloquentController::class, 'subscribe']);
+// Route::post('/comment', [EloquentController::class, 'comment']);
 
-// get 
-Route::get('/audience/{article}', [EloquentController::class, 'getAudience']);
-Route::get('/author/{author}', [EloquentController::class, 'getAudienceByAuthor']);
-Route::get('/comment/{audience}', [EloquentController::class, 'getCommentByA']);
-Route::get('/comments/{topic}', [EloquentController::class, 'getComment']);
+// // get 
+// Route::get('/audience/{article}', [EloquentController::class, 'getAudience']);
+// Route::get('/author/{author}', [EloquentController::class, 'getAudienceByAuthor']);
+// Route::get('/comment/{audience}', [EloquentController::class, 'getCommentByA']);
+// Route::get('/comments/{topic}', [EloquentController::class, 'getComment']);
